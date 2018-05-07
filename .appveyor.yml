@@ -1,0 +1,22 @@
+# Disabled cache in hope of improving reliability of AppVeyor builds
+#cache:
+#- "c:\\sr" # stack root, short paths == fewer problems
+
+# Uncomment the following to enable interactive remote desktop during (init) and after (on_finish) building
+# More info at https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+# init:
+#   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# 
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+build: off
+
+install:
+  - choco install firefox --version 59.0.2
+
+clone_folder: "c:\\ffdecrypt"
+
+test_script:
+- cd tests
+- python run_all -v
